@@ -1,0 +1,55 @@
+name: policyshift-openenv
+version: 0.1.0
+description: OpenEnv-style enterprise workflow environment for policy drift, API drift, compliance drift, approval drift, SLA pressure, and audit trails.
+
+server:
+  host: 0.0.0.0
+  port: 8000
+
+environment:
+  module: app.env
+  class: PolicyShiftEnv
+
+api:
+  app_module: app.main
+  app_variable: app
+
+endpoints:
+  reset: /reset
+  step: /step
+  state: /state
+  tasks: /tasks
+  evaluate_agent: /evaluate_agent
+  compare_agents: /compare_agents
+
+actions:
+  action_type:
+    type: string
+    enum:
+      - read_policy
+      - inspect_schema
+      - query_case
+      - query_record
+      - request_approval
+      - call_api
+      - send_response
+      - write_audit_log
+      - finish
+
+reward:
+  objective: Complete long-horizon enterprise workflows safely under drift.
+  positive:
+    - read current policy
+    - inspect current API schema
+    - request required approval
+    - use non-deprecated API payload
+    - satisfy compliance requirements
+    - write audit trail
+    - meet SLA
+  negative:
+    - use stale policy
+    - use deprecated API fields
+    - skip approval
+    - violate compliance
+    - miss SLA
+    - finish incomplete workflow
